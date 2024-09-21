@@ -1,30 +1,25 @@
 import sly
+import re
 
-class L2Lexer(sly.Lexer):
-    # Define the set of token names
-    tokens = { A,B,C }
+class Lexer(sly.Lexer):
 
-    # Ignore spaces
-    ignore = ' \t'
-
-    # Regular expressions for the tokens
+    tokens = {A,B,C}
     A = r'a+'
     B = r'b|c'
-    #C = r'c'
     C = r'd+'
-    def C(self,t):
-        print('Goat')
-        exit(0)
 
-    # Error handling
-    def error(self, t):
-        print(f'Fuck U Pussy')
-        self.index += 1
-        exit(0)
+    def __init__(self):
+        self.patron = f'^{self.A}({self.B}){self.C}$'
 
-# Testing the lexer
-if __name__ == '__main__':
-    lexer = L2Lexer()
-    data = input("Cadena: ")  # Test input string
-    for tok in lexer.tokenize(data):
-        print(f'type={tok.type}, value={tok.value}')
+    def validar_cadena(self, cadena):
+        return bool(re.match(self.patron, cadena))
+
+lexer = Lexer()
+
+cadenas_prueba = input("Cadena de prueba: ")
+
+
+if lexer.validar_cadena(cadenas_prueba):
+    print(f"'{cadenas_prueba}' cumple con el lenguaje")
+else:
+    print(f"'{cadenas_prueba}' no cumple con el lenguaje")
